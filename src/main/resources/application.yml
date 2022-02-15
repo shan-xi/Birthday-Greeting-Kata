@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: "jdbc:mysql://${MYSQL_HOST:localhost}:3306/line"
+    username: ${mysql_db_username}
+    password: ${mysql_db_password}
+    driver-class-name: "com.mysql.jdbc.Driver"
+  jpa:
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.MySQL5InnoDBDialect"
