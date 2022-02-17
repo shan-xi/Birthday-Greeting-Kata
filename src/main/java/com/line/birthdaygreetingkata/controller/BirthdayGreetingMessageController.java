@@ -38,6 +38,32 @@ public class BirthdayGreetingMessageController {
             obj.add(new BirthdayGreetingMessage(titlePattern, String.format(contentPattern, m.getFirstname())));
         }
         return new BirthdayGreetingMessageListVO(obj, pageNum.orElseGet(() -> 1), page.getTotalPages());
+    }
 
+    @GetMapping(path = "/version2", produces = MediaType.APPLICATION_JSON_VALUE)
+    public BirthdayGreetingMessageListVO simpleMessageVersion2(@RequestParam(name = "pageNum") Optional<Integer> pageNum) {
+
+        List<BirthdayGreetingMessage> obj = new ArrayList<>();
+        Page<Member> page = birthdayGreetingMessageService.getMembersByBirthdayEqualsToToday(pageNum.orElseGet(() -> 1));
+
+        String maleTitlePattern = "Happy birthday!";
+        String maleContentPattern =
+                "Happy birthday, dear %s!" + System.lineSeparator() +
+                        "We offer special discount 20%% off for the following items:" + System.lineSeparator() +
+                        "White Wine, iPhone X";
+        String femaleTitlePattern = "Happy birthday!";
+        String femaleContentPattern =
+                "Happy birthday, dear %s!" + System.lineSeparator() +
+                        "We offer special discount 50%% off for the following items:" + System.lineSeparator() +
+                        "Cosmetic, LV Handbags";
+
+        for (Member m : page.getContent()) {
+            if (m.getGender().equals("Male")) {
+                obj.add(new BirthdayGreetingMessage(maleTitlePattern, String.format(maleContentPattern, m.getFirstname())));
+            } else if (m.getGender().equals("Female")) {
+                obj.add(new BirthdayGreetingMessage(femaleTitlePattern, String.format(femaleContentPattern, m.getFirstname())));
+            }
+        }
+        return new BirthdayGreetingMessageListVO(obj, pageNum.orElseGet(() -> 1), page.getTotalPages());
     }
 }

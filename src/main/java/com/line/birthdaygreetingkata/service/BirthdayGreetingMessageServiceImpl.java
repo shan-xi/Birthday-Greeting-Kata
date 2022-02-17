@@ -2,7 +2,6 @@ package com.line.birthdaygreetingkata.service;
 
 import com.line.birthdaygreetingkata.entity.Member;
 import com.line.birthdaygreetingkata.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,12 +16,16 @@ import java.time.format.DateTimeFormatter;
  */
 @Service
 public class BirthdayGreetingMessageServiceImpl implements BirthdayGreetingMessageService {
-    @Autowired
+
     private MemberRepository memberRepository;
+
+    public BirthdayGreetingMessageServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     @Override
     public Page<Member> getMembersByBirthdayEqualsToToday(int pageNum) {
-        if (pageNum < 1) {
+        if (pageNum < 0) {
             pageNum = 1;
         }
         LocalDate localDate = LocalDate.now();
