@@ -53,4 +53,16 @@ public class BirthdayGreetingMessageServiceTest {
         Page<Member> r = birthdayGreetingMessageService.getMembersByBirthdayEqualsToToday(1);
         assertThat(r.getContent().size()).isEqualTo(2);
     }
+
+    @Test
+    public void get_members_by_birthday_equals_to_today_and_age_over_than_found_two_records() {
+        List<Member> members = new ArrayList<>();
+        members.add(new Member("Robert", "Yen", "Male", "1973/2/17", "robert.yen@linecorp.com"));
+        members.add(new Member("Sherry", "Chen", "Female", "1993/2/17", "sherry.lai@linecorp.com"));
+        page = new PageImpl<>(members);
+        Pageable pageableRequest = PageRequest.of(0, 1000, Sort.Direction.ASC, "id");
+        when(memberRepository.findByBirthdayAndAgeOverThan("02/17", 49, pageableRequest)).thenReturn(page);
+        Page<Member> r = birthdayGreetingMessageService.getMembersByBirthdayEqualsToTodayAndAgeOverThan(1, 49);
+        assertThat(r.getContent().size()).isEqualTo(2);
+    }
 }

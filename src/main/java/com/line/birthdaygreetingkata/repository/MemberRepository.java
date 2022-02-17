@@ -21,4 +21,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     @QueryHints(value = {@QueryHint(name = HINT_COMMENT, value = "a query for pageable")})
     @Query("SELECT m FROM Member m where DATE_FORMAT(STR_TO_DATE(m.birthday, '%Y/%m/%d'), '%m/%d') = :birthday")
     Page<Member> findByBirthday(@Param("birthday") String birthday, Pageable pageable);
+
+    @QueryHints(value = {@QueryHint(name = HINT_COMMENT, value = "a query for pageable")})
+    @Query("SELECT m FROM Member m where DATE_FORMAT(STR_TO_DATE(m.birthday, '%Y/%m/%d'), '%m/%d') = :birthday AND TIMESTAMPDIFF(YEAR, STR_TO_DATE(m.birthday, '%Y/%m/%d'), CURDATE()) >= :age")
+    Page<Member> findByBirthdayAndAgeOverThan(@Param("birthday") String birthday, @Param("age") Integer age, Pageable pageable);
 }

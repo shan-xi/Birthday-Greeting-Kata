@@ -33,4 +33,15 @@ public class BirthdayGreetingMessageServiceImpl implements BirthdayGreetingMessa
         Pageable pageableRequest = PageRequest.of(pageNum - 1, 1000, Sort.Direction.ASC, "id");
         return memberRepository.findByBirthday(birthdayString, pageableRequest);
     }
+
+    @Override
+    public Page<Member> getMembersByBirthdayEqualsToTodayAndAgeOverThan(int pageNum, int age) {
+        if (pageNum < 0) {
+            pageNum = 1;
+        }
+        LocalDate localDate = LocalDate.now();
+        String birthdayString = localDate.format(DateTimeFormatter.ofPattern("MM/dd"));
+        Pageable pageableRequest = PageRequest.of(pageNum - 1, 1000, Sort.Direction.ASC, "id");
+        return memberRepository.findByBirthdayAndAgeOverThan(birthdayString, age, pageableRequest);
+    }
 }

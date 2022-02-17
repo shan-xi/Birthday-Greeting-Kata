@@ -4,6 +4,7 @@ import com.line.birthdaygreetingkata.entity.Member;
 import com.line.birthdaygreetingkata.response.BaseResponse;
 import com.line.birthdaygreetingkata.response.vo.BirthdayGreetingMessage;
 import com.line.birthdaygreetingkata.response.vo.BirthdayGreetingMessageListVO;
+import com.line.birthdaygreetingkata.response.vo.BirthdayGreetingMessageListWithPicVO;
 import com.line.birthdaygreetingkata.service.BirthdayGreetingMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -65,5 +66,19 @@ public class BirthdayGreetingMessageController {
             }
         }
         return new BirthdayGreetingMessageListVO(obj, pageNum.orElseGet(() -> 1), page.getTotalPages());
+    }
+
+    @GetMapping(path = "/version3", produces = MediaType.APPLICATION_JSON_VALUE)
+    public BirthdayGreetingMessageListWithPicVO simpleMessageVersion3(@RequestParam(name = "pageNum") Optional<Integer> pageNum) {
+
+        List<BirthdayGreetingMessage> obj = new ArrayList<>();
+        Page<Member> page = birthdayGreetingMessageService.getMembersByBirthdayEqualsToTodayAndAgeOverThan(pageNum.orElseGet(() -> 1), 49);
+        String titlePattern = "Happy birthday!";
+        String contentPattern = "Happy birthday, dear `%s`!";
+        String elderPicUrl = "https://tw.appledaily.com/resizer/UWiWwelfG_7uReQh6RbW8nKnB8g=/759x543/filters:quality(100)/cloudfront-ap-northeast-1.images.arcpublishing.com/appledaily/QMKJIWBMJCFUYRWKRO6XS6WVRI.jpg";
+        for (Member m : page.getContent()) {
+            obj.add(new BirthdayGreetingMessage(titlePattern, String.format(contentPattern, m.getFirstname())));
+        }
+        return new BirthdayGreetingMessageListWithPicVO(obj, elderPicUrl, pageNum.orElseGet(() -> 1), page.getTotalPages());
     }
 }

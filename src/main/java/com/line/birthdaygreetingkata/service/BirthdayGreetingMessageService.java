@@ -5,4 +5,6 @@ import org.springframework.data.domain.Page;
 
 public interface BirthdayGreetingMessageService {
     Page<Member> getMembersByBirthdayEqualsToToday(int pageNum);
+
+    Page<Member> getMembersByBirthdayEqualsToTodayAndAgeOverThan(int pageNum, int age);
 }
