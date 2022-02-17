@@ -85,4 +85,20 @@ class BirthdayGreetingMessageControllerTest {
                 .andExpect(jsonPath("$.msg").value("success"))
                 .andExpect(content().string(containsString("\"birthdayGreetingMessages\":[]")));
     }
+
+    @Test
+    public void simple_message_version3_should_return_success() throws Exception {
+        List<Member> members = new ArrayList<>();
+        members.add(new Member("Robert", "Yen", "Male", "1973/2/17", "robert.yen@linecorp.com"));
+        members.add(new Member("Peter", "Wang", "Male", "1950/2/17", "peter.wang@linecorp.com"));
+        Page<Member> page = new PageImpl<>(members);
+        when(birthdayGreetingMessageService.getMembersByBirthdayEqualsToTodayAndAgeOverThan(1, 49)).thenReturn(page);
+        this.mockMvc.perform(get("/v1/birthday-greeting-messages/version3").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("SUCCESS"))
+                .andExpect(jsonPath("$.msg").value("success"))
+                .andExpect(content().string(containsString("elderPicUrl")))
+                .andExpect(content().string(containsString("Peter")));
+    }
 }
