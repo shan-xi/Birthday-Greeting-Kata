@@ -26,6 +26,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.converter.json.Jackson2ObjectMapperBuilder.xml;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -41,9 +42,9 @@ class BirthdayGreetingMessageControllerTest {
     @MockBean
     BirthdayGreetingMessageService2 birthdayGreetingMessageService2;
     @MockBean
-    MemberRepository mbemberRepository;
+    MemberRepository memberRepository;
     @MockBean
-    Member2Repository mbember2Repository;
+    Member2Repository member2Repository;
     @Autowired
     MockMvc mockMvc;
 
@@ -110,5 +111,20 @@ class BirthdayGreetingMessageControllerTest {
                 .andExpect(jsonPath("$.msg").value("success"))
                 .andExpect(content().string(containsString("elderPicUrl")))
                 .andExpect(content().string(containsString("Peter")));
+    }
+
+    @Test
+    public void simple_message_version6_should_return_success() throws Exception {
+        List<Member> members = new ArrayList<>();
+        members.add(new Member("Robert", "Yen", "Male", "1973/2/17", "robert.yen@linecorp.com"));
+        members.add(new Member("Peter", "Wang", "Male", "1950/2/17", "peter.wang@linecorp.com"));
+        when(birthdayGreetingMessageService.getMembersByBirthdayEqualsToToday()).thenReturn(members);
+        this.mockMvc.perform(get("/v1/birthday-greeting-messages/version6").contentType(MediaType.APPLICATION_XHTML_XML))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("<root>")))
+                .andExpect(content().string(containsString("<message>")))
+                .andExpect(content().string(containsString("<content>Happy birthday, dear Robert!</content>")))
+                .andExpect(content().string(containsString("<content>Happy birthday, dear Peter!</content>")))
+        ;
     }
 }

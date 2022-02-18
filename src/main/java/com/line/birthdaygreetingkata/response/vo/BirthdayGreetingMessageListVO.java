@@ -7,13 +7,22 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 
 /**
- * Birthday Greeting Message List Object
+ * Birthday Greeting Message List View Object
  */
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode
 public class BirthdayGreetingMessageListVO {
+    /**
+     * Message data
+     */
     private List<BirthdayGreetingMessage> birthdayGreetingMessages;
+    /**
+     * current page number
+     */
     private Integer pageNum;
+    /**
+     * total pages
+     */
     private Integer totalPage;
 }

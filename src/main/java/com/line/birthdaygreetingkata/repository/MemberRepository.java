@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.QueryHint;
 
+import java.util.List;
+
 import static org.hibernate.jpa.QueryHints.HINT_COMMENT;
 
 /**
@@ -18,6 +20,10 @@ import static org.hibernate.jpa.QueryHints.HINT_COMMENT;
  */
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Integer> {
+
+    @Query("SELECT m FROM Member m where DATE_FORMAT(STR_TO_DATE(m.birthday, '%Y/%m/%d'), '%m/%d') = :birthday")
+    List<Member> findByBirthday(@Param("birthday") String birthday);
+
     @QueryHints(value = {@QueryHint(name = HINT_COMMENT, value = "a query for pageable")})
     @Query("SELECT m FROM Member m where DATE_FORMAT(STR_TO_DATE(m.birthday, '%Y/%m/%d'), '%m/%d') = :birthday")
     Page<Member> findByBirthday(@Param("birthday") String birthday, Pageable pageable);
