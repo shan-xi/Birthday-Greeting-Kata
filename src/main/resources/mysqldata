@@ -1,0 +1,33 @@
+CREATE TABLE MEMBER (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+firstname VARCHAR(30) NOT NULL,
+lastname VARCHAR(30) NOT NULL,
+gender VARCHAR(30) NOT NULL,
+birthday VARCHAR(30) NOT NULL,
+email VARCHAR(50)
+);
+
+INSERT INTO member (firstname, lastname, gender, birthday, email)
+VALUES (
+'Robert', 'Yen', 'Male', '1975/8/8', 'robert.yen@linecorp.com'
+);
+
+INSERT INTO member (firstname, lastname, gender, birthday, email)
+VALUES (
+'Cid', 'Change', 'Male', '1990/10/10', 'cid.change@linecorp.com'
+);
+
+INSERT INTO member (firstname, lastname, gender, birthday, email)
+VALUES (
+'Miki', 'Lai', 'Female', '1993/4/5', 'miki.lai@linecorp.com'
+);
+
+INSERT INTO member (firstname, lastname, gender, birthday, email)
+VALUES (
+'Sherry', 'Chen', 'Female', '1993/8/8', 'sherry.lai@linecorp.com'
+);
+
+INSERT INTO member (firstname, lastname, gender, birthday, email)
+VALUES (
+'Peter', 'Wang', 'Male', '1950/12/22', 'peter.wang@linecorp.com'
+);

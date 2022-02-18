@@ -14,7 +14,7 @@ import javax.persistence.QueryHint;
 import static org.hibernate.jpa.QueryHints.HINT_COMMENT;
 
 /**
- * Member Repository
+ * Member Repository for Mysql
  */
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Integer> {

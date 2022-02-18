@@ -1,0 +1,10 @@
+db.member.deleteMany({});
+db.member.insert(
+   [
+     {id:"2", firstname:"Robert", lastname:"Yen", gender:"Male", birthday:new Date("1975/8/8Z"), email:"robert.yen@linecorp.com"},
+     {id:"2", firstname:"Cid", lastname:"Change", gender:"Male", birthday:new Date("1990/2/18Z"), email:"cid.chang@linecorp.com"},
+     {id:"3", firstname:"Miki", lastname:"Lai", gender:"Female", birthday:new Date("1993/4/5Z"), email:"miki.lai@linecorp.com"},
+     {id:"4", firstname:"Sherry", lastname:"Chen", gender:"Female", birthday:new Date("1993/8/8Z"), email:"sherry.lai@linecorp.com"},
+     {id:"5", firstname:"Peter", lastname:"Wang", gender:"Male", birthday:new Date("1950/2/18Z"), email:"peter.wang@linecorp.com"},
+   ]
+);
