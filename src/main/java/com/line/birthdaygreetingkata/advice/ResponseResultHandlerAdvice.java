@@ -3,7 +3,6 @@ package com.line.birthdaygreetingkata.advice;
 import com.line.birthdaygreetingkata.response.BaseResponse;
 import com.line.birthdaygreetingkata.response.ResponseCode;
 import com.line.birthdaygreetingkata.response.ResponseResult;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
  * Uniform API Response Handler
  */
 @ControllerAdvice(annotations = BaseResponse.class)
-@Slf4j
 public class ResponseResultHandlerAdvice implements ResponseBodyAdvice {
 
     @Override

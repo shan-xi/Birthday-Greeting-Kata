@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * Birthday Greeting Message Service using Mysql Repository
@@ -21,6 +22,13 @@ public class BirthdayGreetingMessageServiceImpl implements BirthdayGreetingMessa
 
     public BirthdayGreetingMessageServiceImpl(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
+    }
+
+    @Override
+    public List<Member> getMembersByBirthdayEqualsToToday() {
+        LocalDate localDate = LocalDate.now();
+        String birthdayString = localDate.format(DateTimeFormatter.ofPattern("MM/dd"));
+        return memberRepository.findByBirthday(birthdayString);
     }
 
     @Override

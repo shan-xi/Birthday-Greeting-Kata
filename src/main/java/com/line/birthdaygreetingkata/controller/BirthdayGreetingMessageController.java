@@ -4,9 +4,9 @@ import com.line.birthdaygreetingkata.entity.Member;
 import com.line.birthdaygreetingkata.entity.Member2;
 import com.line.birthdaygreetingkata.response.BaseResponse;
 import com.line.birthdaygreetingkata.response.vo.BirthdayGreetingMessage;
-import com.line.birthdaygreetingkata.response.vo.BirthdayGreetingMessageList2VO;
 import com.line.birthdaygreetingkata.response.vo.BirthdayGreetingMessageListVO;
 import com.line.birthdaygreetingkata.response.vo.BirthdayGreetingMessageListWithPicVO;
+import com.line.birthdaygreetingkata.response.vo.BirthdayGreetingMessageListXmlVO;
 import com.line.birthdaygreetingkata.service.BirthdayGreetingMessageService;
 import com.line.birthdaygreetingkata.service.BirthdayGreetingMessageService2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +87,6 @@ public class BirthdayGreetingMessageController {
         return new BirthdayGreetingMessageListWithPicVO(obj, elderPicUrl, pageNum, page.getTotalPages());
     }
 
-
     @GetMapping(path = "/version4", produces = MediaType.APPLICATION_JSON_VALUE)
     public BirthdayGreetingMessageListVO simpleMessageVersion4(@RequestParam(name = "pageNum", defaultValue = "0") int pageNum) {
 
@@ -102,7 +101,7 @@ public class BirthdayGreetingMessageController {
     }
 
     @GetMapping(path = "/version5", produces = MediaType.APPLICATION_JSON_VALUE)
-    public BirthdayGreetingMessageList2VO simpleMessageVersion5(@RequestParam(name = "pageNum", defaultValue = "0") int pageNum) {
+    public BirthdayGreetingMessageListVO simpleMessageVersion5(@RequestParam(name = "pageNum", defaultValue = "0") int pageNum) {
 
         List<BirthdayGreetingMessage> obj = new ArrayList<>();
         Page<Member2> page = birthdayGreetingMessageService2.getMembersByBirthdayEqualsToToday(pageNum);
@@ -111,6 +110,19 @@ public class BirthdayGreetingMessageController {
         for (Member2 m : page.getContent()) {
             obj.add(new BirthdayGreetingMessage(titlePattern, String.format(contentPattern, m.getFirstname())));
         }
-        return new BirthdayGreetingMessageList2VO(obj, pageNum, page.getTotalPages());
+        return new BirthdayGreetingMessageListVO(obj, pageNum, page.getTotalPages());
+    }
+
+    @GetMapping(path = "/version6", produces = MediaType.APPLICATION_XML_VALUE)
+    public BirthdayGreetingMessageListXmlVO simpleMessageVersion6() {
+
+        List<BirthdayGreetingMessage> obj = new ArrayList<>();
+        List<Member> members = birthdayGreetingMessageService.getMembersByBirthdayEqualsToToday();
+        String titlePattern = "Happy birthday!";
+        String contentPattern = "Happy birthday, dear %s!";
+        for (Member m : members) {
+            obj.add(new BirthdayGreetingMessage(titlePattern, String.format(contentPattern, m.getFirstname())));
+        }
+        return new BirthdayGreetingMessageListXmlVO(obj);
     }
 }
