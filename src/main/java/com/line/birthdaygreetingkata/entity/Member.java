@@ -1,18 +1,16 @@
 package com.line.birthdaygreetingkata.entity;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 
 /**
- * Data model mapping
+ * Data model mapping for Mysql
  */
 @Data
-@NoArgsConstructor
 @Entity
-@Table(name = "Member")
+@Table(name = "member")
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +20,9 @@ public class Member {
     private String gender;
     private String birthday;
     private String email;
+
+    public Member() {
+    }
 
     public Member(String firstname, String lastname, String gender, String birthday, String email) {
         this.firstname = firstname;

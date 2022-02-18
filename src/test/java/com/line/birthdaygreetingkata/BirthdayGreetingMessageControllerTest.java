@@ -2,12 +2,16 @@ package com.line.birthdaygreetingkata;
 
 import com.line.birthdaygreetingkata.controller.BirthdayGreetingMessageController;
 import com.line.birthdaygreetingkata.entity.Member;
+import com.line.birthdaygreetingkata.repository.Member2Repository;
+import com.line.birthdaygreetingkata.repository.MemberRepository;
 import com.line.birthdaygreetingkata.service.BirthdayGreetingMessageService;
+import com.line.birthdaygreetingkata.service.BirthdayGreetingMessageService2;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -29,11 +33,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest({BirthdayGreetingMessageController.class})
+@AutoConfigureDataMongo
 class BirthdayGreetingMessageControllerTest {
 
     @MockBean
     BirthdayGreetingMessageService birthdayGreetingMessageService;
-
+    @MockBean
+    BirthdayGreetingMessageService2 birthdayGreetingMessageService2;
+    @MockBean
+    MemberRepository mbemberRepository;
+    @MockBean
+    Member2Repository mbember2Repository;
     @Autowired
     MockMvc mockMvc;
 
@@ -92,7 +102,7 @@ class BirthdayGreetingMessageControllerTest {
         members.add(new Member("Robert", "Yen", "Male", "1973/2/17", "robert.yen@linecorp.com"));
         members.add(new Member("Peter", "Wang", "Male", "1950/2/17", "peter.wang@linecorp.com"));
         Page<Member> page = new PageImpl<>(members);
-        when(birthdayGreetingMessageService.getMembersByBirthdayEqualsToTodayAndAgeOverThan(1, 49)).thenReturn(page);
+        when(birthdayGreetingMessageService.getMembersByBirthdayEqualsToTodayAndAgeOverThan(anyInt(), anyInt())).thenReturn(page);
         this.mockMvc.perform(get("/v1/birthday-greeting-messages/version3").contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andDo(print())
                 .andExpect(status().isOk())

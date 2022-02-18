@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,10 +35,9 @@ public class BirthdayGreetingMessageServiceTest {
 
     @Test
     public void get_members_by_birthday_equals_to_today_no_data_found() {
-        Pageable pageableRequest = PageRequest.of(0, 1000, Sort.Direction.ASC, "id");
         List<Member> members = new ArrayList<>();
         Page<Member> page2 = new PageImpl<>(members);
-        when(memberRepository.findByBirthday("02/17", pageableRequest)).thenReturn(page2);
+        when(memberRepository.findByBirthday(any(), any())).thenReturn(page2);
         Page<Member> r = birthdayGreetingMessageService.getMembersByBirthdayEqualsToToday(1);
         assertThat(r.getContent().size()).isEqualTo(0);
     }
@@ -48,8 +48,7 @@ public class BirthdayGreetingMessageServiceTest {
         members.add(new Member("Robert", "Yen", "Male", "1975/2/17", "robert.yen@linecorp.com"));
         members.add(new Member("Sherry", "Chen", "Female", "1993/2/17", "sherry.lai@linecorp.com"));
         page = new PageImpl<>(members);
-        Pageable pageableRequest = PageRequest.of(0, 1000, Sort.Direction.ASC, "id");
-        when(memberRepository.findByBirthday("02/17", pageableRequest)).thenReturn(page);
+        when(memberRepository.findByBirthday(any(), any())).thenReturn(page);
         Page<Member> r = birthdayGreetingMessageService.getMembersByBirthdayEqualsToToday(1);
         assertThat(r.getContent().size()).isEqualTo(2);
     }
@@ -57,11 +56,10 @@ public class BirthdayGreetingMessageServiceTest {
     @Test
     public void get_members_by_birthday_equals_to_today_and_age_over_than_found_two_records() {
         List<Member> members = new ArrayList<>();
-        members.add(new Member("Robert", "Yen", "Male", "1973/2/17", "robert.yen@linecorp.com"));
-        members.add(new Member("Sherry", "Chen", "Female", "1993/2/17", "sherry.lai@linecorp.com"));
+        members.add(new Member("Robert", "Yen", "Male", "1973/2/18", "robert.yen@linecorp.com"));
+        members.add(new Member("Sherry", "Chen", "Female", "1993/2/18", "sherry.lai@linecorp.com"));
         page = new PageImpl<>(members);
-        Pageable pageableRequest = PageRequest.of(0, 1000, Sort.Direction.ASC, "id");
-        when(memberRepository.findByBirthdayAndAgeOverThan("02/17", 49, pageableRequest)).thenReturn(page);
+        when(memberRepository.findByBirthdayAndAgeOverThan(any(), any(), any())).thenReturn(page);
         Page<Member> r = birthdayGreetingMessageService.getMembersByBirthdayEqualsToTodayAndAgeOverThan(1, 49);
         assertThat(r.getContent().size()).isEqualTo(2);
     }

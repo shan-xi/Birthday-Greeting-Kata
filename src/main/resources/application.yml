@@ -11,3 +11,21 @@ spring:
     properties:
       hibernate:
         dialect: "org.hibernate.dialect.MySQL5InnoDBDialect"
+
+  data:
+    mongodb:
+      authentication-database: line
+      username: ${mongodb_username}
+      password: ${mongodb_password}
+      database: line
+      port: 27017
+      host: localhost
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: INFO
